@@ -1,5 +1,6 @@
 ﻿using ManejoDeArchivos;
 using TF_IDF;
+using Busqueda;
 
 namespace MoogleEngine;
 
@@ -17,7 +18,11 @@ public static class Moogle
         
         TF_IDF.TFIDF objeto2 = new TF_IDF.TFIDF( objeto1.ArchivosTxt , objeto1.PalabrasUnicas , objeto1.NombresvsPalabras);
         objeto2.Motor_TF_IDF();
-    
+        Busqueda.busqueda objeto3 = new Busqueda.busqueda(objeto1.ArchivosTxt , objeto1.PalabrasUnicas , objeto1.NombresvsPalabras);
+        objeto3.TokenizarQuery("hola");
+        objeto3.Motor_Busqueda();
+
+     
     }
     
 

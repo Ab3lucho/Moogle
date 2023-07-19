@@ -27,77 +27,87 @@ namespace TF_IDF
                 // Dictionary<string, Dictionary<string, double>> Textos_Palabras_IDF;
                 // Dictionary<string, Dictionary<string, double>> DiccionarioTF_IDF;
          }
-        //Metodo para calcular TF//
-        public void CalcularTF()
-        {
-            //Calculo de TF
-            foreach (KeyValuePair<string, string[]> item in PalabrasUnicas)
+       
+         //Metodo TF//
+         
+         public void TF()
+         {
+             foreach (var item in PalabrasUnicas)
+             {
+                 Dictionary<string, double> TF = new Dictionary<string, double>();
+                 foreach (var item2 in item.Value)
+                 {
+                     double contador = 0;
+                     foreach (var item3 in NombresvsPalabras[item.Key])
+                     {
+                         if (item2 == item3)
+                         {
+                             contador++;
+                         }
+                     }
+                     TF.Add(item2, contador / NombresvsPalabras[item.Key].Length);
+                 }
+                 Textos_Palabras_TF.Add(item.Key, TF);
+             }
+         }
+
+         //Metodo IDF//
+
+            public void IDF()
             {
-                Dictionary<string, double> TF = new Dictionary<string, double>();
-                foreach (string palabra in item.Value)
+                foreach (var item in PalabrasUnicas)
                 {
-                    double tf = 0;
-                    foreach (string palabra2 in NombresvsPalabras[item.Key])
+                    Dictionary<string, double> IDF = new Dictionary<string, double>();
+                    foreach (var item2 in item.Value)
                     {
-                        if (palabra == palabra2)
+                        double contador = 0;
+                        foreach (var item3 in PalabrasUnicas)
                         {
-                            tf++;
-                        }
-                    }
-                    tf = tf / NombresvsPalabras[item.Key].Length;
-                    TF.Add(palabra, tf);
-                }
-                Textos_Palabras_TF.Add(item.Key, TF);
-            }
-        }
-        //Metodo para calcular IDF//
-        public void CalcularIDF()
-        {
-            //Calculo de IDF
-            foreach (KeyValuePair<string, string[]> item in PalabrasUnicas)
-            {
-                Dictionary<string, double> IDF = new Dictionary<string, double>();
-                foreach (string palabra in item.Value)
-                {
-                    double idf = 0;
-                    foreach (KeyValuePair<string, string[]> item2 in PalabrasUnicas)
-                    {
-                        foreach (string palabra2 in item2.Value)
-                        {
-                            if (palabra == palabra2)
+                            foreach (var item4 in item3.Value)
                             {
-                                idf++;
-                                break;
+                                if (item2 == item4)
+                                {
+                                    contador++;
+                                    break;
+                                }
                             }
                         }
+                        IDF.Add(item2, Math.Log10(PalabrasUnicas.Count / contador));
                     }
-                    idf = Math.Log10(ArchivosTxt.Length / idf);
-                    IDF.Add(palabra, idf);
+                    Textos_Palabras_IDF.Add(item.Key, IDF);
                 }
-                Textos_Palabras_IDF.Add(item.Key, IDF);
             }
-        }
-        //Metodo para calcular TF-IDF//
-        public void CalcularTF_IDF()
-        {
-            //Calculo de TF-IDF
-            foreach (KeyValuePair<string, Dictionary<string, double>> item in Textos_Palabras_TF)
+
+            //Metodo TF-IDF//
+
+            public Dictionary<string, Dictionary<string, double>> TF_IDF()
             {
-                Dictionary<string, double> TF_IDF = new Dictionary<string, double>();
-                foreach (KeyValuePair<string, double> item2 in item.Value)
+                foreach (var item in PalabrasUnicas)
                 {
-                    TF_IDF.Add(item2.Key, item2.Value * Textos_Palabras_IDF[item.Key][item2.Key]);
+                    Dictionary<string, double> TF_IDF = new Dictionary<string, double>();
+                    foreach (var item2 in item.Value)
+                    {
+                        TF_IDF.Add(item2, Textos_Palabras_TF[item.Key][item2] * Textos_Palabras_IDF[item.Key][item2]);
+                    }
+                    DiccionarioTF_IDF.Add(item.Key, TF_IDF);
                 }
-                DiccionarioTF_IDF.Add(item.Key, TF_IDF);
+                return DiccionarioTF_IDF;
             }
-        }
-        //Motor//
-        public void Motor_TF_IDF()
-        {
-            CalcularTF();
-            CalcularIDF();
-            CalcularTF_IDF();
-        }
+           
+
+            //Motor//
+
+            public void Motor_TF_IDF()
+            {
+                TF();
+                IDF();
+                TF_IDF();
+                
+            }
+
+
+
+            
 
     }
 }
