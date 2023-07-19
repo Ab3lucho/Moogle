@@ -10,6 +10,8 @@ namespace Busqueda
     {
 
        public string[] ArchivosTxt { get; set; }
+       public string query { get; set; }
+
        public Dictionary<string, string[]> PalabrasUnicas = new Dictionary<string, string[]>();
        public Dictionary<string, string[]> NombresvsPalabras = new Dictionary<string, string[]>();
 
@@ -21,11 +23,12 @@ namespace Busqueda
         
         //Constructor//
         
-         public busqueda ( string[] archivostxt  , Dictionary<string, string[]> palabrasunicas , Dictionary<string, string[]> nombresvspalabras )
+         public busqueda ( string[] archivostxt  , Dictionary<string, string[]> palabrasunicas , Dictionary<string, string[]> nombresvspalabras, string Query )
          {
                 ArchivosTxt = archivostxt;
                 PalabrasUnicas = palabrasunicas;
                 NombresvsPalabras = nombresvspalabras;
+                query = Query;
                 
                
          }
@@ -59,10 +62,10 @@ namespace Busqueda
         
         //Tokenizar la query y convertir en minusculas//
 
-        public string[] TokenizarQuery(string Query)
+        public string[] TokenizarQuery()
         {
             char[] delimitadores = { ' ', ',', '.', ':', '¿', '?', '!', '*', '/', '"', '#', ')', '(', };
-            string[] QueryTokenizada = Query.Split(delimitadores);
+            string[] QueryTokenizada = this.query.Split(delimitadores);
             for (int i = 0; i < QueryTokenizada.Length; i++)
             {
                 QueryTokenizada[i] = QueryTokenizada[i].ToLower();
@@ -120,10 +123,15 @@ namespace Busqueda
 
         public void Motor_Busqueda()
         {
-            
+            TokenizarQuery();
             TF_Query();
+            Console.WriteLine("TF de la query Cargado");
             IDF_Query();
-            TF_IDF_Query();
+            Console.WriteLine("IDF de la query Cargado");
+            TF_IDF_Query(); 
+            Console.WriteLine("TF-IDF de la query Cargado");
+            Console.WriteLine("Buscando...");
+
         }
 
         //Similitud coseno//

@@ -8,7 +8,7 @@ namespace MoogleEngine;
 public static class Moogle
 {
 
-    public static void Cargar()
+    public static void Cargar(string Query)
     {
         string tempath = Path.Combine(Directory.GetCurrentDirectory());
         string mypath = tempath.Replace("MoogleServer", "");
@@ -18,11 +18,10 @@ public static class Moogle
         
         TF_IDF.TFIDF objeto2 = new TF_IDF.TFIDF( objeto1.ArchivosTxt , objeto1.PalabrasUnicas , objeto1.NombresvsPalabras);
         objeto2.Motor_TF_IDF();
-        Busqueda.busqueda objeto3 = new Busqueda.busqueda(objeto1.ArchivosTxt , objeto1.PalabrasUnicas , objeto1.NombresvsPalabras);
-        objeto3.TokenizarQuery("hola");
+        Busqueda.busqueda objeto3 = new Busqueda.busqueda(objeto1.ArchivosTxt , objeto1.PalabrasUnicas , objeto1.NombresvsPalabras, Query);
         objeto3.Motor_Busqueda();
 
-    //dda 
+     
     }
     
 
@@ -31,7 +30,7 @@ public static class Moogle
     public static SearchResult Query(string query) 
     {
 
-        Cargar();
+        Cargar(query);
         
 
         SearchItem[] items = new SearchItem[3] 
