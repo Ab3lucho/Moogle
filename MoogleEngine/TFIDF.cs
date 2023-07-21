@@ -31,7 +31,7 @@ namespace TF_IDF
         public void TF()
         {
             Dictionary<string, double> wordCounts = new Dictionary<string, double>();
-            int documentoLength = 0;
+            double documentoLength = 0;
 
             //Calcular la frecuencia de cada palabra en el documento//
             foreach (var item in NombresvsPalabras.Values)
@@ -66,17 +66,21 @@ namespace TF_IDF
             }
             
         }
-        // Metodo IDF Optimizado//
 
+
+        // Metodo IDF Optimizado//
         public void IDF()
         {
             Dictionary<string, double> wordCounts = new Dictionary<string, double>();
-            int documentoLength = 0;
+            //wordIDFs
+            Dictionary<string, double> IDFTemp = new Dictionary<string, double>();
+            double documentosTotales = this.ArchivosTxt.Length;
 
             //Calcular la frecuencia de cada palabra en el documento//
             foreach (var item in NombresvsPalabras.Values)
             {
-                foreach (var item2 in item)
+                HashSet<string> palabras = new HashSet<string>(item);
+                foreach (var item2 in palabras)
                 {
                     if (wordCounts.ContainsKey(item2))
                     {
@@ -84,37 +88,57 @@ namespace TF_IDF
                     }
                     else
                     {
-                        wordCounts.Add(item2, 1);
+                        wordCounts[item2] = 1;
                     }
-                    documentoLength++;
                 }
             }
 
             //Calcular el IDF de cada palabra en el documento//
-            foreach (var item in ArchivosTxt)
+            foreach (var item in wordCounts.Keys)
             {
-                Dictionary<string, double> IDF = new Dictionary<string, double>();
-                foreach (var item2 in PalabrasUnicas[item])
-                {
-                    IDF.Add(item2, Math.Log10(documentoLength / wordCounts[item2]));
-                }
-                Textos_Palabras_IDF.Add(item, IDF);
+                    double idf = Math.Log(documentosTotales / wordCounts[item]);
+                    IDFTemp[item] = idf;
             }
+            foreach (string item in ArchivosTxt)
+            {
+                string[] palabras = this.NombresvsPalabras[item];
+                Dictionary<string, double>NombrevsIDFTemp = new Dictionary<string, double>();
 
+                foreach (string item2 in this.PalabrasUnicas[item])
+                {
+                    double idf = IDFTemp[item2];
+                    NombrevsIDFTemp[item2] = idf;
+                } 
+                this.Textos_Palabras_IDF.Add(item, NombrevsIDFTemp);
+            }
         }
 
-        // Metodo TF_IDF Optimizado//
+//Cleaned
 
+        // Metodo TF_IDF Optimizado//
         public void TF_IDF()
         {
-            foreach (var item in ArchivosTxt)
+            
+            for (int i = 0; i < ArchivosTxt.Length; i++)
             {
-                Dictionary<string, double> TF_IDF = new Dictionary<string, double>();
-                foreach (var item2 in PalabrasUnicas[item])
+                string[] PalabrasTemporales = this.NombresvsPalabras[this.ArchivosTxt[i]];
+                string[] PalabrasNoRepetidasTemporales = this.PalabrasUnicas[ArchivosTxt[i]];
+
+                Dictionary<string, double> PalabravsTF = this.Textos_Palabras_TF[ArchivosTxt[i]];
+                Dictionary<string, double> PalabravsIDF = this.Textos_Palabras_IDF[ArchivosTxt[i]];
+
+                Dictionary<string, double> PalabrasvsTFIDF = new Dictionary<string, double>();
+
+                for (int x = 0; x < PalabrasNoRepetidasTemporales.Length; x++)
                 {
-                    TF_IDF.Add(item2, Textos_Palabras_TF[item][item2] * Textos_Palabras_IDF[item][item2]);
+                    double tf = PalabravsTF[PalabrasNoRepetidasTemporales[x]];
+                    double idf = PalabravsIDF[PalabrasNoRepetidasTemporales[x]];
+
+                    double tfidf = tf*idf;
+
+                    PalabrasvsTFIDF.Add(PalabrasNoRepetidasTemporales[x], tfidf);
                 }
-                DiccionarioTF_IDF.Add(item, TF_IDF);
+                this.DiccionarioTF_IDF.Add(this.ArchivosTxt[i], PalabrasvsTFIDF);
             }
         }
           

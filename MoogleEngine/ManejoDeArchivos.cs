@@ -22,6 +22,25 @@ namespace ManejoDeArchivos
     public Dictionary<string, string[]> NombresvsPalabras = new Dictionary<string, string[]>();
    
 
+    public string[] LimpiarNombre(){
+
+        for (int i = 0; i < this.ArchivosTxt.Length; i++)
+        {
+            if (ArchivosTxt != null)
+            {
+                string PathTemporal = Path.Combine(Directory.GetCurrentDirectory());
+                string  path = PathTemporal.Replace("MoogleServer", "");
+                path += @"Content";
+
+                this.ArchivosTxt[i] = this.ArchivosTxt[i].Replace(path, "");
+                this.ArchivosTxt[i] = this.ArchivosTxt[i].Replace(".txt", "");
+                this.ArchivosTxt[i] = this.ArchivosTxt[i].Replace(@"\", "");
+            }
+        }
+        return this.ArchivosTxt;
+    }
+
+
     // Metodo para leer el contenido de cada array y almacenarlo en el array correspondinte
     public string[] ObtenerTextos()
     {
@@ -33,6 +52,7 @@ namespace ManejoDeArchivos
                 this.ContenidoArchivos[i] = this.ContenidoArchivos[i].ToLower();
             }
         }
+
         return this.ContenidoArchivos;
     }
 
@@ -60,6 +80,7 @@ namespace ManejoDeArchivos
     public string[] Motor_Manejo()
     {
         ObtenerTextos();
+        LimpiarNombre();
         ObtenerPalabras();
 
         System.Console.WriteLine("Datos cargados");

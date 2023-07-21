@@ -9,6 +9,9 @@ public static class Moogle
 {
 
     static Dictionary<string, string> Documento_Snippet = new Dictionary<string, string>();
+    
+    static ManejoDeArchivos.archivos objeto1;
+
     public static Dictionary<double, string > Cargar(string Query)
     {
         string tempath = Path.Combine(Directory.GetCurrentDirectory());

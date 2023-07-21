@@ -19,12 +19,13 @@ namespace Busqueda
         public Dictionary<string, double> Query_IDF = new Dictionary<string, double>();
         public Dictionary<string, double> Query_TF_IDF = new Dictionary<string, double>();
 
+        public Dictionary<double, string> Results = new Dictionary<double, string>();
+
 
         //Diccionarios de la similitud//
         public Dictionary<string, double> Similitud_Coseno;
         public Dictionary<string, double> Similitud_CosenoOrdenado;
         //Results
-        public Dictionary<double, string> Results;
         public Dictionary<string, string> Snippet;
 
         // Declaracion de variables Query//
@@ -41,6 +42,9 @@ namespace Busqueda
             NombresvsPalabras = nombresvspalabras;
             query = Query;
             DiccionarioTF_IDF = diccionarioTF_IDF;
+            
+            Dictionary<double, string> Results;
+
 
 
 
@@ -150,40 +154,30 @@ namespace Busqueda
 
         public void Similitud_TFIDF_Query()
         {
-            Dictionary<string, double> DiccionarioTFIDF_Query = new Dictionary<string, double>();
             Similitud_Coseno = new Dictionary<string, double>();
-            foreach (var item in ArchivosTxt)
+
+            foreach (var name in this.ArchivosTxt)
             {
-                
-
-                foreach (var item2 in QueryTokenizada)
+                Dictionary<string, double> DiccionarioTFIDF_Query = new Dictionary<string, double>();
+                foreach (var queryWord in QueryTokenizada)
                 {
-                    if (DiccionarioTF_IDF[item].ContainsKey(item2))
+                    if (this.DiccionarioTF_IDF[name].ContainsKey(queryWord))
                     {
-                        if (DiccionarioTFIDF_Query.ContainsKey(item2) == false)
-                      {
-                         DiccionarioTFIDF_Query.Add(item2, DiccionarioTF_IDF[item][item2] * Query_TF_IDF[item2]);
-                      }
+                        if (DiccionarioTFIDF_Query.ContainsKey(queryWord) == false)
+                        {
+                            DiccionarioTFIDF_Query.Add(queryWord, DiccionarioTF_IDF[name][queryWord]*Query_TF_IDF[queryWord]);
+                        }
                     }
-                   
-                    
                 }
-                double contador = 0;
-                foreach (var item3 in DiccionarioTFIDF_Query)
+                double sum = 0;
+                foreach (var item in DiccionarioTFIDF_Query.Values)
                 {
-                    contador += item3.Value;
+                    sum+=item;
                 }
-                Similitud_Coseno.Add(item, contador);
-
+                Similitud_Coseno.Add(name, sum);
             }
 
 
-        }
-
-        // Calculo de la similitud coseno  //
-
-        public void Similitud_Coseno_()
-        {
             Similitud_CosenoOrdenado = new Dictionary<string, double>();
             foreach (var item in ArchivosTxt)
             {
@@ -192,58 +186,44 @@ namespace Busqueda
                 double contador3 = 0;
                 foreach (var item2 in DiccionarioTF_IDF[item].Values)
                 {
-                    contador += Math.Pow(item2, 2);
+                    contador2 += Math.Pow(item2, 2);
                 }
                 foreach (var item3 in Query_TF_IDF.Values)
                 {
-                    contador2 += Math.Pow(item3, 2);
+                    contador3 += Math.Pow(item3, 2);
                 }
-                contador3 = Math.Sqrt(contador) * Math.Sqrt(contador2);
-                Similitud_CosenoOrdenado.Add(item, contador3);
-
+                contador = Math.Sqrt(contador2) * Math.Sqrt(contador3);
+                Similitud_CosenoOrdenado.Add(item, contador);
             }
-
-            foreach (var item in ArchivosTxt)
+            foreach (var name in this.ArchivosTxt)
             {
-
-                Similitud_CosenoOrdenado[item] = Similitud_Coseno[item] / Similitud_CosenoOrdenado[item];
-
+                Similitud_CosenoOrdenado[name] = Similitud_Coseno[name] / Similitud_CosenoOrdenado[name];
             }
-
+            
             // Ordenar Similitud Coseno Ordenado//
+            var items = from pair in Similitud_CosenoOrdenado
+                orderby pair.Value descending
+                select pair;
 
-            foreach (var item in Similitud_CosenoOrdenado)
-            {
-                Similitud_CosenoOrdenado.OrderByDescending(x => x.Value);
-            }
-
-        }
-
-        // Metodo de resultados //
-
-        public void Resultados()
-        {
-            Results = new Dictionary<double, string>();
             foreach (var item in Similitud_CosenoOrdenado.Keys)
             {
                 if (Similitud_CosenoOrdenado[item] > 0)
                 {
-                    if (!Results.ContainsKey(Similitud_CosenoOrdenado[item]))
+                    if (!this.Results.ContainsKey(Similitud_CosenoOrdenado[item]))
                     {
-                        Results.Add(Similitud_CosenoOrdenado[item], item);
+                        this.Results.Add(Similitud_CosenoOrdenado[item], item);
                     }
                 }
             }
-        }
+        }    
+        
         // Motor de resultados //
 
         public void Motor_Resultados()
         {
             Similitud_TFIDF_Query();
             Console.WriteLine("Similitud TF-IDF de la query Cargado");
-            Similitud_Coseno_();
             Console.WriteLine("Similitud Coseno de la query Cargado");
-            Resultados();
             Console.WriteLine("Resultados Cargado");
         }
 
