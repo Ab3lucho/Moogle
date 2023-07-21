@@ -36,6 +36,8 @@ namespace TF_IDF
             //Calcular la frecuencia de cada palabra en el documento//
             foreach (var item in NombresvsPalabras.Values)
             {
+                  documentoLength += item.Length;
+
                 foreach (var item2 in item)
                 {
                     if (wordCounts.ContainsKey(item2))
@@ -44,9 +46,8 @@ namespace TF_IDF
                     }
                     else
                     {
-                        wordCounts.Add(item2, 1);
+                        wordCounts[item2] = 1;
                     }
-                    documentoLength++;
                 }
             }
 
