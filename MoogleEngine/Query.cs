@@ -151,7 +151,7 @@ namespace Busqueda
         public void Similitud_TFIDF_Query()
         {
             Dictionary<string, double> DiccionarioTFIDF_Query = new Dictionary<string, double>();
-            
+            Similitud_Coseno = new Dictionary<string, double>();
             foreach (var item in ArchivosTxt)
             {
                 
@@ -184,6 +184,7 @@ namespace Busqueda
 
         public void Similitud_Coseno_()
         {
+            Similitud_CosenoOrdenado = new Dictionary<string, double>();
             foreach (var item in ArchivosTxt)
             {
                 double contador = 0;
@@ -198,14 +199,14 @@ namespace Busqueda
                     contador2 += Math.Pow(item3, 2);
                 }
                 contador3 = Math.Sqrt(contador) * Math.Sqrt(contador2);
-                Similitud_Coseno.Add(item, contador3);
+                Similitud_CosenoOrdenado.Add(item, contador3);
 
             }
 
             foreach (var item in ArchivosTxt)
             {
 
-                Similitud_CosenoOrdenado[item] = Similitud_Coseno[item] / Similitud_CosenoOrdenado.Values.Max();
+                Similitud_CosenoOrdenado[item] = Similitud_Coseno[item] / Similitud_CosenoOrdenado[item];
 
             }
 
@@ -222,11 +223,15 @@ namespace Busqueda
 
         public void Resultados()
         {
+            Results = new Dictionary<double, string>();
             foreach (var item in Similitud_CosenoOrdenado.Keys)
             {
-                if (Results.ContainsKey(Similitud_CosenoOrdenado[item]) != false)
+                if (Similitud_CosenoOrdenado[item] > 0)
                 {
-                    Results.Add(Similitud_CosenoOrdenado[item], item);
+                    if (!Results.ContainsKey(Similitud_CosenoOrdenado[item]))
+                    {
+                        Results.Add(Similitud_CosenoOrdenado[item], item);
+                    }
                 }
             }
         }
@@ -247,7 +252,7 @@ namespace Busqueda
 
         public void Snippet_()
         {
-
+            Snippet = new Dictionary<string, string>();
             foreach (var item in Results)
             {
                 string[] Documento = NombresvsPalabras[item.Value];
