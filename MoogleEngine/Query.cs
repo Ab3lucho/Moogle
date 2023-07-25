@@ -12,6 +12,7 @@ namespace Busqueda
         public string[] ArchivosTxt { get; set; }
         public Dictionary<string, string[]> PalabrasUnicas = new Dictionary<string, string[]>();
         public Dictionary<string, string[]> NombresvsPalabras = new Dictionary<string, string[]>();
+
         //Importado de TF_IDF//
         public Dictionary<string, Dictionary<string, double>> DiccionarioTF_IDF = new Dictionary<string, Dictionary<string, double>>();
         //Declaracion de diccionarios Query//
@@ -42,7 +43,8 @@ namespace Busqueda
             NombresvsPalabras = nombresvspalabras;
             query = Query;
             DiccionarioTF_IDF = diccionarioTF_IDF;
-            
+           
+
             Dictionary<double, string> Results;
 
 
@@ -165,14 +167,14 @@ namespace Busqueda
                     {
                         if (DiccionarioTFIDF_Query.ContainsKey(queryWord) == false)
                         {
-                            DiccionarioTFIDF_Query.Add(queryWord, DiccionarioTF_IDF[name][queryWord]*Query_TF_IDF[queryWord]);
+                            DiccionarioTFIDF_Query.Add(queryWord, DiccionarioTF_IDF[name][queryWord] * Query_TF_IDF[queryWord]);
                         }
                     }
                 }
                 double sum = 0;
                 foreach (var item in DiccionarioTFIDF_Query.Values)
                 {
-                    sum+=item;
+                    sum += item;
                 }
                 Similitud_Coseno.Add(name, sum);
             }
@@ -199,11 +201,11 @@ namespace Busqueda
             {
                 Similitud_CosenoOrdenado[name] = Similitud_Coseno[name] / Similitud_CosenoOrdenado[name];
             }
-            
+
             // Ordenar Similitud Coseno Ordenado//
             var items = from pair in Similitud_CosenoOrdenado
-                orderby pair.Value descending
-                select pair;
+                        orderby pair.Value descending
+                        select pair;
 
             foreach (var item in Similitud_CosenoOrdenado.Keys)
             {
@@ -215,8 +217,8 @@ namespace Busqueda
                     }
                 }
             }
-        }    
-        
+        }
+
         // Motor de resultados //
 
         public void Motor_Resultados()
@@ -227,69 +229,69 @@ namespace Busqueda
             Console.WriteLine("Resultados Cargado");
         }
 
-        
+
         // Calcular el Snippet con 5 elementos antes y despues del query  //
 
         public void Snippet_()
         {
             Snippet = new Dictionary<string, string>();
-            foreach (var item in Results)
+
+            foreach (var item in Results.Values)
             {
-                string[] Documento = NombresvsPalabras[item.Value];
-                string[] palabrasunicas = PalabrasUnicas[item.Value];
-                string[] Snippet = new string[10];
+                string[] palabras = NombresvsPalabras[item];
+                string[] snippet = new string[10];
 
-                // Buscar la posicion de la palabra clave en el documento //
+                // Busqueda de la posiciion palabra clave en el documento //
 
-                int posicion = 0;
-                for (int i = 0; i < Documento.Length; i++)
+                int index = 0;
+                for (int i = 0; i < palabras.Length; i++)
                 {
-                    if (Documento[i] == palabrasunicas[0])
+                    if (palabras[i] == QueryTokenizada[0])
                     {
-                        posicion = i;
+                        index = i;
                         break;
                     }
                 }
 
-                // Agregar las 5 palabras antes y despues de la palabra clave //
+                // Busqueda de las 5 palabras antes y despues de la palabra clave //
 
-                int contador = 0;
-                int contador2 = 0;
-                for (int i = posicion; i < Documento.Length; i++)
+                if (index - 5 < 0)
                 {
-                    if (contador < 5)
+                    if (index == 0)
                     {
-                        Snippet[contador] = Documento[i];
-                        contador++;
+                        for (int i = 0; i < 5 ; i++)
+                        {
+                            snippet[i] = palabras[i];
+                        }
                     }
                     else
                     {
-                        break;
+                    for (int i = 0; i < palabras.Length; i++)
+                    {
+                        snippet[i] = palabras[i];
+                    }    
+                    }
+                    
+                }
+                else if (index + 4 > palabras.Length)
+                {
+                    for (int i = palabras.Length - 10; i < palabras.Length; i++)
+                    {
+                        snippet[i] = palabras[i];
                     }
                 }
-                for (int i = posicion - 1; i > 0; i--)
+                else
                 {
-                    if (contador2 < 5)
+                    int contador = 0;
+                    for (int i = index - 4; i < index + 4; i++)
                     {
-                        Snippet[contador] = Documento[i];
+                        snippet[contador] = palabras[i];
                         contador++;
-                        contador2++;
-                    }
-                    else
-                    {
-                        break;
                     }
                 }
 
-                // Agregar el Snippet al diccionario de Snippets //
-
-                string SnippetFinal = "";
-                foreach (var item2 in Snippet)
-                {
-                    SnippetFinal += item2 + " ";
-                }
-                this.Snippet.Add(item.Value, SnippetFinal);
-
+                string SnippetFinal = string.Join(" ", snippet);
+                this.Snippet.Add(item, SnippetFinal);
 
             }
 
@@ -299,16 +301,16 @@ namespace Busqueda
 
         public void Motor_Snippet()
         {
-            
+
             Snippet_();
             Console.WriteLine("Snippet Cargado");
             Console.WriteLine("Busqueda finalizada");
         }
 
-
-
-
-
+        
+       
+       
+              
 
 
     }

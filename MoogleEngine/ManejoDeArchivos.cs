@@ -13,14 +13,34 @@ namespace ManejoDeArchivos
         rutaCarpeta = RutaCarpeta;
         ArchivosTxt = Directory.GetFiles(this.rutaCarpeta, "*.txt");
         ContenidoArchivos = new string[ArchivosTxt.Length];
+        
 
     }
     public string rutaCarpeta { get; set; }
     public string[] ArchivosTxt { get; set; }
     public string[] ContenidoArchivos { get; set; }
+    public string[] Palabras {get;set;}
     public Dictionary<string, string[]> PalabrasUnicas = new Dictionary<string, string[]>();
     public Dictionary<string, string[]> NombresvsPalabras = new Dictionary<string, string[]>();
    
+
+    
+
+
+    // Metodo para leer el contenido de cada array y almacenarlo en el array correspondinte
+    public string[] ObtenerTextos()
+    {
+        for (int i = 0; i < this.ArchivosTxt.Length; i++)
+        {
+            if (this.ArchivosTxt[i] != null)
+            {
+                this.ContenidoArchivos[i] = File.ReadAllText(ArchivosTxt[i]);
+                this.ContenidoArchivos[i] = this.ContenidoArchivos[i].ToLower();
+            }
+        }
+
+        return this.ContenidoArchivos;
+    }
 
     public string[] LimpiarNombre(){
 
@@ -41,22 +61,6 @@ namespace ManejoDeArchivos
     }
 
 
-    // Metodo para leer el contenido de cada array y almacenarlo en el array correspondinte
-    public string[] ObtenerTextos()
-    {
-        for (int i = 0; i < this.ArchivosTxt.Length; i++)
-        {
-            if (this.ArchivosTxt[i] != null)
-            {
-                this.ContenidoArchivos[i] = File.ReadAllText(ArchivosTxt[i]);
-                this.ContenidoArchivos[i] = this.ContenidoArchivos[i].ToLower();
-            }
-        }
-
-        return this.ContenidoArchivos;
-    }
-
-
 
     // Metodo para obtener palabras (Tokenizador)
     public void ObtenerPalabras()
@@ -74,17 +78,34 @@ namespace ManejoDeArchivos
 
             }
         }
+        
+    }
 
+    public string[] Obtenerpalabrasstring()
+    {
+        string text = "";
+        char[] delimitadores = { ' ', ',', '.', ':', '¿', '?', '!', '*', '/', '"', '#', ')', '(', };
 
+        for (int i = 0; i < this.ContenidoArchivos.Length; i++)
+        {
+            // Se concatenan los textos en una sola variable
+            text += this.ContenidoArchivos[i];
+            
+        }  
+        // Se separan las palabras de la variable TextVar utilizando los delimitadores definidos anteriormente
+        this.Palabras =  text.Split(delimitadores, StringSplitOptions.RemoveEmptyEntries);
+        return this.Palabras;
     }
     public string[] Motor_Manejo()
     {
         ObtenerTextos();
         LimpiarNombre();
         ObtenerPalabras();
+        Obtenerpalabrasstring();
 
         System.Console.WriteLine("Datos cargados");
         return this.ContenidoArchivos;
+        
 
     }
     }

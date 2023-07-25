@@ -14,11 +14,21 @@ public static class Moogle
 
     public static Dictionary<double, string > Cargar(string Query)
     {
+           
+        Documento_Snippet.Clear();
+
+        if (objeto1 == null)
+        {
         string tempath = Path.Combine(Directory.GetCurrentDirectory());
         string mypath = tempath.Replace("MoogleServer", "");
         mypath += @"Content";
-        ManejoDeArchivos.archivos objeto1 = new ManejoDeArchivos.archivos(mypath);
-        objeto1.Motor_Manejo();
+        objeto1 = new ManejoDeArchivos.archivos(mypath);
+        objeto1.Motor_Manejo(); 
+        
+        
+        }
+
+       
         
         TF_IDF.TFIDF objeto2 = new TF_IDF.TFIDF( objeto1.ArchivosTxt , objeto1.PalabrasUnicas , objeto1.NombresvsPalabras);
         objeto2.Motor_TF_IDF();
@@ -27,6 +37,7 @@ public static class Moogle
         objeto3.Motor_Busqueda();
         objeto3.Motor_Resultados();
         objeto3.Motor_Snippet();
+         
 
              foreach (var snipet in objeto3.Snippet)
         {
@@ -42,6 +53,37 @@ public static class Moogle
         // Devolver un diccionario que contiene los resultados de la búsqueda.
         return objeto3.Results;
     }
+
+     // Sugerencia de busqueda (distancia de Levenshtein) //
+
+     static int LevenshteinDistance(string s1, string s2)
+{
+    int m = s1.Length;
+    int n = s2.Length;
+    int[] prev = new int[n + 1];
+    int[] curr = new int[n + 1];
+
+    for (int j = 0; j <= n; j++)
+        prev[j] = j;
+
+    for (int i = 1; i <= m; i++)
+    {
+        curr[0] = i;
+        for (int j = 1; j <= n; j++)
+        {
+            if (s1[i - 1] == s2[j - 1])
+                curr[j] = prev[j - 1];
+            else
+                curr[j] = 1 + Math.Min(prev[j], Math.Min(curr[j - 1], prev[j - 1]));
+        }
+        int[] temp = prev;
+        prev = curr;
+        curr = temp;
+    }
+    return prev[n];
+}
+
+     
 
     public static SearchResult Query(string query) 
     {
@@ -64,11 +106,33 @@ public static class Moogle
 
         Console.WriteLine(" Busqueda finalizada ");
 
+          static string Suggestion(string query){
+            string suggestion = "";
+
+            int[] Distancias = new int [objeto1.Palabras.Length];
+            for (int i = 0; i < objeto1.Palabras.Length; i++)
+            {
+                Distancias[i] = LevenshteinDistance(query, objeto1.Palabras[i]);
+            }
+            int min = Distancias.Min();
+            int index = Array.IndexOf(Distancias, min);
+            suggestion = objeto1.Palabras[index];
+            
+            return suggestion;
+        }
+        string suggestion = Suggestion(query);
+
+        if (query == suggestion)
+        {
+            SearchItem[] items4 = items2;
+            return new SearchResult(items2);
+        }
+        else
+        {
         // Devolver un objeto SearchResult que contiene los resultados de la búsqueda.
-        return new SearchResult(items2);
-
+        return new SearchResult(items2, Suggestion(query));            
+        }
     }
-
 }
  
 

@@ -1,0 +1,199 @@
+\documentclass[a4paper, 12pt]{report}
+\usepackage[left=2.5cm, right=2.5cm, top=3cm, bottom=3cm]{geometry}
+
+\usepackage{xcolor}
+\usepackage{amsmath, amssymb, amsfonts, amsthm, amssymb}
+\usepackage{url, hyperref}
+\usepackage{graphicx}
+% Usar plantilla en español.
+\usepackage[spanish]{babel}
+
+% Agregar citas bibliográficas
+\usepackage{cite}
+
+% Poner código fuente en latex
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\lstset{
+	frame=Ltb,
+	framerule=0pt,
+	aboveskip=0.5cm,
+	framextopmargin=3pt,
+	framexbottommargin=3pt,
+	framexleftmargin=0.4cm,
+	framesep=0pt,
+	rulesep=.4pt,
+	backgroundcolor=\color{gray97},
+	rulesepcolor=\color{black},
+	% Resalta los espacios en blanco en las cadenas
+	showstringspaces = true, columns=fullflexible, basicstyle=\ttfamily,
+	stringstyle=\color{orange}, commentstyle=\color{gray45},
+	keywordstyle=\bfseries\color{green!40!black},
+	% 
+	numbers=left, numbersep=15pt, numberstyle=\tiny, numberfirstline = false,
+	breaklines=true, }
+% minimizar fragmentado de listados
+\lstnewenvironment{listing}[1][]
+{\lstset{#1}\pagebreak[0]}{\pagebreak[0]}
+
+\begin{document}
+
+\title{{\bf \LARGE Moogle!}}
+\author{Facultad de Matemática y Computación \\ Universidad de La Habana \\ \\ Abel Jesus Quincose Fuentes}
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+	¿Te gustaría encontrar el texto que buscas en segundos, sin tener que revisar cientos de documentos? ¿Te gustaría saber cuáles son los documentos más relevantes para tu tema de interés, sin tener que leerlos todos? Entonces, lo que necesitas es {\bf Moogle}, la aplicación que te permite buscar inteligentemente un texto en un conjunto de documentos. Moogle usa una técnica avanzada llamada TF-IDF, que calcula la importancia de una palabra (o un texto) en relación con el conjunto de documentos. Así, Moogle te muestra los documentos que más se ajustan a lo que buscas, ordenados por su grado de similitud. Moogle es una aplicación fácil de usar, rápida y eficaz, que te ahorra tiempo y esfuerzo en tus investigaciones o aprendizajes.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+\section*{Introducción}
+\addcontentsline{toc}{section}{Introducción}
+
+\subsection*{¿Qué es el  Moogle?}
+\addcontentsline{toc}{subsection}{¿Qué es el Moogle?}
+
+Me alegra que estés interesado en Moogle, una aplicación  original que busca inteligentemente un texto en un conjunto de documentos.
+ Es una aplicación web muy innovadora y útil, desarrollada con tecnología {\tt .NET Core 6.0}, usando Blazor como framework web para la interfaz gráfica, y en el lenguaje {\tt C\#}.
+
+{ \bf Moogle} se compone de dos componentes fundamentales: {\bf MoogleServer} y {\bf  MoogleEngine}
+. {\bf  MoogleServer} es un servidor web que renderiza la interfaz gráfica y sirve los resultados.{\bf MoogleEngine} es una biblioteca de clases donde está implementada la lógica del algoritmo de búsqueda.
+ El algoritmo de búsqueda utiliza técnicas de procesamiento de lenguaje natural y aprendizaje
+ automático para encontrar los documentos más relevantes para el texto introducido por el usuario.
+
+
+
+\subsection*{¿Para qué sirve?}
+\addcontentsline{toc}{subsection}{¿Para qué puedo usarlo?}
+
+{\bf Moogle} es una aplicación muy útil para cualquier persona que necesite buscar información en un conjunto de documentos.
+ Ya sea que seas un estudiante, un investigador, un periodista, un escritor, un abogado, o simplemente alguien curioso, {\bf Moogle} te ayudará a encontrar lo que buscas en cuestión de segundos. 
+{\bf Moogle} te ahorrará tiempo y esfuerzo, y te permitirá acceder a una gran cantidad de información de forma rápida y sencilla.
+
+
+
+{\bf Moogle} es una aplicación web muy fácil de usar, que no requiere instalación ni registro. 
+Solo tienes que acceder a la página web de {\bf Moogle} desde cualquier dispositivo con conexión a internet, y empezar a buscar. {\bf Moogle}
+ es compatible con todos los tipos de archivos y formatos, y puede buscar en cualquier idioma. 
+{\bf Moogle} es una aplicación muy segura y confiable, que respeta tu privacidad y no almacena ni comparte tus datos.
+
+%Este funciona con el conjuto de archivos de textos (solo archivos .txt ) que se quieran analizar  almacenados  en la carpeta {\tt \color{gray45}Content} la cual sera llamada base de datos del {Moogle}
+
+
+\subsubsection*{Instrucciones para el uso optimo de la aplicacion}		
+\addcontentsline{toc}{subsubsection}{Instrucciones}
+
+Para el funcionamiento adecuado de esta aplicacion se debe tener 
+\href{https://learn.microsoft.com/es-es/dotnet/core/install/}{instalado {\tt \color{gray45}.NET Core 6.0}} y tener cargada  la carpeta {\tt \color{gray45}Content}  con el conjunto de archivos de textos(solo archivos de textos) que se quieran analizar 
+
+\begin{itemize}
+	\item {\bf Linux o WSL:} Debe tener instalado {\tt \color{gray45} make}. Si no lo tiene instalado
+	      puede acceder a el ejecutando el comando comando en el terminal {\tt \color{gray45}sudo apt update \&\& sudo apt install make}. Luego deberá ejecutar {\tt \color{gray45}make dev}
+
+	\item {\bf Windows:} Basandonos en el cumplimiento de requisitos previos se puede ejecutar la aplicacion desde el comando  {\tt \color{gray45}dotnet watch run --project MoogleServer}
+\end{itemize}
+
+Posteriormente de haber ejecutado alguno de los comandos anteriores, dependiendo de la configuracion de su navegador se debe inicilizar
+ automaticamente una ventana con la aplicion en ejecucion. De no haber ocurrido lo anterior usted puede acceder al {\bf Moogle} entrando desde su navegador a  
+\href{http://localhost:5000}{http://localhost:5000} y en segundos estará {\bf Moogle!}
+introduciendo su búsqueda en la ``entrada'' y luego presionando el botón
+``Buscar''.
+
+\section*{Funcionamineto}
+\addcontentsline{toc}{section}{Funcionamiento}
+
+\subsection*{Motor de búsqueda}
+\addcontentsline{toc}{subsection}{Motor de búsqueda}
+
+
+ Nuestro motor de búsqueda utiliza un modelo vectorial avanzado que combina {\it Term Frequency and Inverse Document Frequency (TF-IDF)})
+ con la{\it Cosine
+		Similarity} para calcular la relevancia de una consulta
+. Esta combinación de técnicas permite a nuestro motor de búsqueda determinar qué tan importante es un término en 
+un documento en relación con todos los demás documentos en el conjunto de datos.Para implemetar la formula del calculo de {(TF-IDF)} se hace uso 
+de la siguiente formula:
+
+\begin{equation}
+	TFIDF = (\frac{tf}{tw}) \times \log(\frac{td}{dt})
+\end{equation}
+
+Donde las variables llevan consigo los siguientes significado :
+\begin{itemize}
+	\item $tf$ es la frecuencia del término en el documento actual.
+	\item $tw$ es la cantidad de palabras totales en el documento actual.
+	\item $td$ es la cantidad total de documentos a analizar.
+	\item $dt$ es la cantidad de documentos que contienen el término.
+\end{itemize}
+
+
+Después de hacer lo anterior necesitamos calcular la ``similitud'' entre el
+vector {\it document} y el vector {\it query} para lo cual se hace uso de {\it
+		Cosine Similarity}. La idea es intentar estimar el ``ángulo'' comprendido entre
+el vector {\it query} y el vector {\it document}: mientras menor sea este
+ángulo, mayor ``similitud'' tendrán estos vectores. Para lo anterior se hace
+uso de la fórmula:
+
+Imagina que estás en un mundo mágico donde los documentos y las consultas son representados por flechas en el espacio.
+ Cada flecha apunta en una dirección diferente, y cuanto más cerca estén las flechas, más similares serán los {\it documentos} y {\it las consultas} que representan.
+ ¿Cómo podríamos medir la {\it similitud} entre estas flechas? ¡Con la{ \it similitud del coseno}, por supuesto!
+
+La {\it similitud del coseno} nos permite calcular el ángulo entre dos flechas, que representan el {\it documento} y {\it la consulta}.
+ Cuanto menor sea este ángulo, mayor será la {\it similitud} entre ellos. Para calcular la {\it similitud del coseno}, utilizamos la siguiente fórmula mágica:
+
+\begin{equation}
+	\cos \alpha = \frac{v_d \cdot v_q}{||v_d|| ~ ||v_q||}
+\end{equation}
+
+Donde las variables llevan consigo los siguientes significado :
+
+\begin{itemize}
+	\item $v_d$ el vector de {\it document}
+	\item $v_q$ el vector de {\it query}
+	\item $||v||$ es la magnitud del vector $v$
+\end{itemize}
+
+\subsection*{Implementación}
+\addcontentsline{toc}{subsection}{Implementación}
+
+\subsubsection*{\tt ManejoDeArchivos.cs}
+
+La clase \texttt{archivos} en el espacio de nombres \texttt{ManejoDeArchivos} maneja archivos de texto en una carpeta especificada.
+ Tiene varios métodos para leer, procesar y manipular el contenido de los archivos.
+ El constructor toma una ruta de carpeta y obtiene una lista de archivos \texttt{.txt}.
+ Los métodos \texttt{ObtenerTextos}, \texttt{LimpiarNombre}, \texttt{ObtenerPalabras} y \texttt{Obtenerpalabrasstring} leen, procesan y manipulan el contenido de los archivos.
+ El método \texttt{Motor\_Manejo} llama a los métodos anteriores y muestra un mensaje indicando que los datos se han cargado correctamente.
+
+
+\subsubsection*{\tt TFIDF.cs}
+
+ La clase \texttt{TFIDF} en el espacio de nombres \texttt{TF\_IDF} calcula el valor \texttt{TF-IDF} para un conjunto de documentos de texto.
+ El constructor toma una matriz de nombres de archivo, un diccionario de palabras únicas y un diccionario de palabras por nombre de archivo.
+ Los métodos \texttt{TF}, \texttt{IDF} y \texttt{TF\_IDF} calculan los valores
+
+\subsubsection*{\tt Query.cs}
+
+La clase \texttt{Busqueda} en el espacio de nombres \texttt{Busqueda} se encuentran implementados varios metodos con diferentes funciones entre sí.
+Los métodos \texttt{TF-Query}, \texttt{IDF-Query} y \texttt{TF-IDF-Query} calculan los valores \texttt{TF-IDF} de la Query. 
+Luego se implementa el algoritmo ya comentado \texttt { Cosine Similarity} que es el encargado de computar la relevancia de una busqueda  donde el encargado de esta funcion es el método \texttt {Similitud-TFIDF-Query}.
+Por ultimo el método \texttt{Snippet} busca la posición de una palabra clave y crea un fragmento con las 5 palabras antes y después de ella. Este método se utiliza para generar un resumen o vista previa de un documento más grande basado en una búsqueda específica de palabras clave.
+
+\subsubsection*{\tt Moogle.cs}
+
+ La clase \texttt{Moogle} en el espacio de nombres \texttt{MoogleEngine} proporciona una interfaz para realizar búsquedas en documentos de texto.
+ Los métodos \texttt{Cargar} y \texttt{Query} realizan la búsqueda y devuelven los resultados, mientras que el método estático \texttt{Suggestion} devuelve una sugerencia de búsqueda utilizando la distancia de Levenshtein.
+
+
+
+\end{document}
+
+
+

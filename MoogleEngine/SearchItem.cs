@@ -1,4 +1,7 @@
 namespace MoogleEngine;
+using ManejoDeArchivos;
+using TF_IDF;
+using Busqueda;
 
 public class SearchItem
 {

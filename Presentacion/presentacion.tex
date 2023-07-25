@@ -1,0 +1,151 @@
+\documentclass{beamer}
+\usetheme{Madrid}
+\usecolortheme{beaver}
+
+\usepackage{xcolor}
+\usepackage{amsmath, amssymb, amsfonts, amsthm, amssymb}
+\usepackage{url, hyperref}
+
+% Usar plantilla en español.
+\usepackage[spanish]{babel}
+
+% Agregar citas bibliográficas
+\usepackage{cite}
+
+% Poner código fuente en latex
+\usepackage{listings}
+\usepackage{color}
+
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{bookmark}
+\usepackage{makecell}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{graphicx}
+
+\usepackage{beamerthemesplit}
+
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+
+\title[Moogle!]{\LARGE Moogle!}
+\author{Abel Jesus Quincose Fuentes}
+\institute[Universidad de La Habana]
+{
+  Facultad de Matem\'atica y Computacin
+}
+\date{\today}
+
+\begin{document}
+\begin{frame}
+  \maketitle
+\end{frame}
+
+\section{Introducción}
+
+\begin{frame}{Introducción}
+  
+  \textbf{Moogle!} es un proyecto de programación \underline{totalmente original} cuyo propósito
+    es buscar inteligentemente un texto en un conjunto de documentos.
+    Dada una búsqueda introducida por el usuario, este programa es capaz de leer
+    archivos de texto en formato \emph{.txt} de una colección y devolver los documentos relevantes.
+  inteligentemente un texto en un conjunto de documentos.
+
+\end{frame}
+
+\begin{frame}{Qué es el \textbf{Moogle!}?}
+    
+         ¿Alguna vez has buscado algo en una colección de archivos\emph{.txt} y te has sentido abrumado por la cantidad de resultados irrelevantes? ¡No busques más, porque \texttt{Moogle!} está aquí para ayudarte! Con \texttt{Moogle!}, puedes buscar en una colección predefinida y personalizable de archivos \emph{.txt} en la carpeta \texttt{Content} del directorio del proyecto, y \texttt{Moogle!} te devolverá los documentos más relevantes en orden descendente de relevancia. ¡Así es, el documento más relevante estará al principio de la lista!
+
+ Pero eso no es todo,\texttt{Moogle!} también te ofrece sugerencias en caso de que los términos de tu búsqueda no se encuentren en el corpus de documentos pero existan coincidencias con términos semejantes. Esto es especialmente útil si has cometido algún error ortográfico al ingresar tu búsqueda. ¡Con \texttt{ Moogle!}, nunca más tendrás que preocuparte por buscar en una montaña de resultados irrelevantes! ¿No es genial?
+    
+\end{frame}
+
+\subsection{Estructura?}
+
+\begin{frame}{Estructura}
+    \begin{center}
+       .
+\texttt{Moogle!} es una aplicación web muy innovadora y útil, desarrollada con tecnología {\tt .NET Core 6.0}, usando Blazor como framework web para la interfaz gráfica, y en el lenguaje {\tt C\#}.
+
+{ \bf Moogle} se compone de dos componentes fundamentales: {\bf MoogleServer} y {\bf  MoogleEngine}
+. {\bf  MoogleServer} es un servidor web que renderiza la interfaz gráfica y sirve los resultados.{\bf MoogleEngine} es una biblioteca de clases donde está implementada la lógica del algoritmo de búsqueda.
+ El algoritmo de búsqueda utiliza técnicas de procesamiento de lenguaje natural y aprendizaje
+ automático para encontrar los documentos más relevantes para el texto introducido por el usuario.
+
+     \end{center}
+\end{frame}
+
+\subsection*{Instrucciones para el uso optimo de la aplicacion}
+
+\begin{frame}{Instrucciones para el uso optimo de la aplicacion}
+    \begin{center}
+        Para el funcionamiento adecuado de esta aplicacion se debe tener 
+\href{https://learn.microsoft.com/es-es/dotnet/core/install/}{instalado {\tt .NET Core 6.0}} y tener cargada  la carpeta {\tt Content}  con el conjunto de archivos de textos(solo archivos de textos) que se quieran analizar 
+
+\begin{itemize}
+	\item {\bf Linux o WSL:} Debe tener instalado {\tt  make}. Si no lo tiene instalado
+	      puede acceder a el ejecutando el comando comando en el terminal {\tt sudo apt update \&\& sudo apt install make}. Luego deberá ejecutar {\tt make dev}
+
+	\item {\bf Windows:} Basandonos en el cumplimiento de requisitos previos se puede ejecutar la aplicacion desde el comando  {\tt dotnet watch run --project MoogleServer}
+\end{itemize}
+
+    \end{center}
+\end{frame}
+
+\subsection*{TF-IDF}
+
+\begin{frame}{TF-IDF}
+    \begin{center}
+        \large Moogle utiliza una técnica avanzada llamada TF-IDF, que calcula la importancia de una palabra (o un texto) en relación con el conjunto de documentos. Esto significa que Moogle es capaz de mostrarte los documentos que más se ajustan a lo que buscas, ahorrándote tiempo y esfuerzo en tus investigaciones o aprendizajes.
+       \large Para implemetar la formula del calculo de {(TF-IDF)} se hace uso 
+de la siguiente formula:
+\begin{equation}
+	TFIDF = (\frac{tf}{tw}) \times \log(\frac{td}{dt})
+\end{equation}
+Donde las variables llevan consigo los siguientes significado :
+\begin{itemize}
+	\item $tf$ es la frecuencia del término en el documento actual.
+	\item $tw$ es la cantidad de palabras totales en el documento actual.
+	\item $td$ es la cantidad total de documentos a analizar.
+	\item $dt$ es la cantidad de documentos que contienen el término.
+\end{itemize}
+        
+    \end{center}
+\end{frame}
+
+\subsection*{Similitud del Coseno}
+
+\begin{frame}{Similitud del Coseno}
+    \begin{center}
+        \large La {\it similitud del coseno} nos permite calcular el ángulo entre dos flechas, que representan el {\it documento} y {\it la consulta}.
+ Cuanto menor sea este ángulo, mayor será la {\it similitud} entre ellos. Para calcular la {\it similitud del coseno}, utilizamos la siguiente fórmula mágica:
+
+\begin{equation}
+	\cos \alpha = \frac{v_d \cdot v_q}{||v_d|| ~ ||v_q||}
+\end{equation}
+
+Donde las variables llevan consigo los siguientes significado :
+
+\begin{itemize}
+	\item $v_d$ el vector de {\it document}
+	\item $v_q$ el vector de {\it query}
+	\item $||v||$ es la magnitud del vector $v$
+\end{itemize}
+\end{center}
+\end{frame}
+
+
+\section{Conclusiones}
+
+\begin{frame}{Conclusiones}
+    \begin{center}
+        \large Moogle! es fácil de usar, rápida y eficaz. Con Moogle, puedes realizar búsquedas precisas y obtener resultados relevantes en cuestión de segundos. ¡Prueba Moogle hoy mismo y descubre todo lo que puede hacer por ti!
+    \end{center}
+\end{frame}
+
+
+\end{document}
