@@ -12,7 +12,7 @@ namespace ManejoDeArchivos
     {
         rutaCarpeta = RutaCarpeta;
         ArchivosTxt = Directory.GetFiles(this.rutaCarpeta, "*.txt");
-        ContenidoArchivos = new string[ArchivosTxt.Length];
+        ContenidoArchivos = new string[ArchivosTxt.Length + 1];
         
 
     }
@@ -42,7 +42,7 @@ namespace ManejoDeArchivos
                 this.ContenidoArchivos[i] = this.ContenidoArchivos[i].ToLower();
             }
         }
-        ContenidoArchivos[ContenidoArchivos.Length - 1] = "tesoro";
+        ContenidoArchivos[ContenidoArchivos.Length - 1] = "astrolopitecus";
     // Devolvemos la matriz de nombres actualizada
     
         return this.ContenidoArchivos;
@@ -61,11 +61,18 @@ namespace ManejoDeArchivos
                 this.ArchivosTxt[i] = this.ArchivosTxt[i].Replace(path, "");
                 this.ArchivosTxt[i] = this.ArchivosTxt[i].Replace(".txt", "");
                 this.ArchivosTxt[i] = this.ArchivosTxt[i].Replace(@"\", "");
+                
             }
-        }
-        ArchivosTxt[ArchivosTxt.Length - 1] = "tesoro";
-    // Devolvemos la matriz de nombres actualizada
-    
+        }    // Devolvemos la matriz de nombres actualizada
+                List<string>Puente = new List<string>();
+                for (int i = 0; i < this.ArchivosTxt.Length; i++)
+                {
+                    Puente.Add(this.ArchivosTxt[i]);   
+                }
+                Puente.Add("astrolopitecus");
+
+        this.ArchivosTxt = Puente.ToArray();
+
         return this.ArchivosTxt;
     }
 
