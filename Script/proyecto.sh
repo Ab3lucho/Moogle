@@ -34,7 +34,7 @@ run()
 clean()
 {
     clear
-    echo "Limpiando documentos archivods basura"
+    echo "Limpiando archivos basura"
 
     cd ../ 
     cd Informe 

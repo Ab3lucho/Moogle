@@ -25,7 +25,11 @@ namespace ManejoDeArchivos
    
 
     
-
+ private void FakeData(){
+        string[] palabraFalsa = {"astrolopitecus"};
+        NombresvsPalabras.Add("astrolopitecus", palabraFalsa);
+        PalabrasUnicas.Add("astrolopitecus", palabraFalsa);
+    }
 
     // Metodo para leer el contenido de cada array y almacenarlo en el array correspondinte
     public string[] ObtenerTextos()
@@ -38,7 +42,9 @@ namespace ManejoDeArchivos
                 this.ContenidoArchivos[i] = this.ContenidoArchivos[i].ToLower();
             }
         }
-
+        ContenidoArchivos[ContenidoArchivos.Length - 1] = "tesoro";
+    // Devolvemos la matriz de nombres actualizada
+    
         return this.ContenidoArchivos;
     }
 
@@ -57,6 +63,9 @@ namespace ManejoDeArchivos
                 this.ArchivosTxt[i] = this.ArchivosTxt[i].Replace(@"\", "");
             }
         }
+        ArchivosTxt[ArchivosTxt.Length - 1] = "tesoro";
+    // Devolvemos la matriz de nombres actualizada
+    
         return this.ArchivosTxt;
     }
 

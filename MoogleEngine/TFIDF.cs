@@ -64,6 +64,9 @@ namespace TF_IDF
                 }
                 Textos_Palabras_TF.Add(item, TF);
             }
+            Dictionary<string, double> fakenameVsTF = new Dictionary<string, double>();
+            fakenameVsTF.Add("tesoro", 0);
+            this.Textos_Palabras_TF.Add("escondido", fakenameVsTF);
             
         }
 
@@ -111,6 +114,9 @@ namespace TF_IDF
                 } 
                 this.Textos_Palabras_IDF.Add(item, NombrevsIDFTemp);
             }
+            Dictionary<string, double> fakenameVsITF = new Dictionary<string, double>();
+            fakenameVsITF.Add("tesoro", 0);
+            this.Textos_Palabras_IDF.Add("escondido", fakenameVsITF);
         }
 
 //Cleaned
@@ -140,6 +146,9 @@ namespace TF_IDF
                 }
                 this.DiccionarioTF_IDF.Add(this.ArchivosTxt[i], PalabrasvsTFIDF);
             }
+            Dictionary<string, double> fakenameVsTFIDF = new Dictionary<string, double>();
+            fakenameVsTFIDF.Add("tesoro", 0);
+            this.DiccionarioTF_IDF.Add("escondido", fakenameVsTFIDF);
         }
           
 

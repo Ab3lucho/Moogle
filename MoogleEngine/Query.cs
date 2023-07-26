@@ -118,7 +118,7 @@ namespace Busqueda
             for (int i = 0; i < QueryTokenizada.Length; i++)
             {
                 //Se calcula el IDF de la palabra y se agrega al diccionario de IDF del query
-                double idf = Math.Log(cantidad_total_documentos / ContadorPalabra(QueryTokenizada[i], this.NombresvsPalabras, this.ArchivosTxt));
+                double idf = Math.Log(cantidad_total_documentos +1/ ContadorPalabra(QueryTokenizada[i], this.NombresvsPalabras, this.ArchivosTxt)+1);
                 if (Query_IDF.ContainsKey(QueryTokenizada[i]) != true)
                 {
                     Query_IDF.Add(QueryTokenizada[i], idf);
@@ -283,7 +283,7 @@ namespace Busqueda
                 else
                 {
                     int contador = 0;
-                    for (int i = index - 4; i < index + 4; i++)
+                    for (int i = index - 5; i < index + 5; i++)
                     {
                         snippet[contador] = palabras[i];
                         contador++;
